@@ -135,7 +135,10 @@ public class ChessMatch {
 	// Método privado que executa o movimento físico de uma peça no tabuleiro
 	private Piece makeMove(Position source, Position target) {
 		 // Remove a peça da posição de origem
-		 Piece p = board.removePiece(source);
+		 ChessPiece p = (ChessPiece)board.removePiece(source);
+		 
+		 p.increaseMoveCount();
+		 
 		 // Tenta remover uma peça na posição de destino (se houver uma)
 		 Piece capturedPiece = board.removePiece(target);
 		 // Coloca a peça movida na posição de destino
@@ -156,7 +159,10 @@ public class ChessMatch {
 	// Método privado que desfaz um movimento que foi feito
 	private void undoMove(Position source, Position target, Piece capturedPiece) {
 		// Remove a peça que foi movida para a posição de destino
-		Piece p = board.removePiece(target);
+		ChessPiece p = (ChessPiece)board.removePiece(target);
+		
+		p.decreaseMoveCount();
+		
 		// Coloca a peça de volta na posição de origem
 		board.placePiece(p, source);
 		
@@ -164,6 +170,7 @@ public class ChessMatch {
 		if(capturedPiece != null) {
 			// Coloca a peça capturada de volta na posição de destino
 			board.placePiece(capturedPiece, target);
+			
 			// Remove a peça capturada da lista de peças capturadas
 			capturedPieces.remove(capturedPiece);
 			// Coloca a peça capturada de volta na lista de peças em jogo

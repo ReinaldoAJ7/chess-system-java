@@ -13,6 +13,7 @@ public abstract class ChessPiece extends Piece{
 	
 	// Variável que armazena a cor da peça de xadrez
 	private Color color;
+	private int moveCount;
 
 	// Construtor que inicializa uma peça de xadrez com tabuleiro e cor
 	public ChessPiece(Board board, Color color) {
@@ -26,6 +27,16 @@ public abstract class ChessPiece extends Piece{
 	public Color getColor() {
 		// Retorna a cor da peça
 		return color;
+	}
+	public int getMoveCount() {
+		return moveCount;
+	}
+	
+	public void increaseMoveCount() {
+		moveCount++;
+	}
+	public void decreaseMoveCount() {
+		moveCount--;
 	}
 	
 	// Método que retorna a posição da peça em notação de xadrez
