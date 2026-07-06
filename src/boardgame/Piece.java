@@ -39,8 +39,8 @@ public abstract class Piece {
 		boolean[][] mat = possibleMoves();
 		// Loop externo que itera sobre as linhas da matriz
 		for(int i = 0; i < mat.length; i++) {
-			// Loop interno que itera sobre as colunas da matriz
-			for(int j = 0; j < mat.length; j++) {
+			// Loop interno que itera sobre as colunas da matriz (usa mat[i].length)
+			for(int j = 0; j < mat[i].length; j++) {
 				// Se encontra um movimento possível (valor true)
 				if(mat[i][j]) {
 					// Retorna true indicando que há pelo menos um movimento

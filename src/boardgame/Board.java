@@ -15,8 +15,7 @@ public class Board {
 		// Verifica se o número de linhas e colunas é válido (maior que 0)
 		if(rows < 1 || columns <1) {
 			// Lança uma exceção se o tabuleiro for inválido
-			throw new BoardException("          Error creating board!!\n " +	
-									 "There must be at least 1 row and 1 column...");
+			throw new BoardException("Erro ao criar o tabuleiro. Deve haver pelo menos 1 linha e 1 coluna.");
 		}
 		// Atribui o número de linhas
 		this.rows = rows;
@@ -43,7 +42,7 @@ public class Board {
 		// Verifica se a posição existe no tabuleiro
 		if(!positionExists(row, column)) {
 			// Lança uma exceção se a posição não existir
-			throw new BoardException("position not on the board.");
+			throw new BoardException("Posição fora do tabuleiro.");
 		}
 		// Retorna a peça na posição especificada
 		return pieces[row][column];
@@ -54,7 +53,7 @@ public class Board {
 		// Verifica se a posição existe no tabuleiro
 		if(!positionExists(position)) {
 			// Lança uma exceção se a posição não existir
-			throw new BoardException("position not on the board.");
+			throw new BoardException("Posição fora do tabuleiro.");
 		}
 		// Retorna a peça na posição especificada
 		return pieces[position.getRow()][position.getColumn()];
@@ -65,7 +64,7 @@ public class Board {
 		// Verifica se já existe uma peça nessa posição
 		if(thereIsAPiece(position)) {
 			// Lança uma exceção se já houver uma peça
-			throw new BoardException("There's already a piece on position.");
+			throw new BoardException("Já existe uma peça nessa posição.");
 		}
 		// Coloca a peça na matriz de peças
 		pieces[position.getRow()][position.getColumn()] = piece;
@@ -78,7 +77,7 @@ public class Board {
 		// Verifica se a posição existe no tabuleiro
 		if(!positionExists(position)) {
 			// Lança uma exceção se a posição não existir
-			throw new BoardException("position not on the board.");
+			throw new BoardException("Posição fora do tabuleiro.");
 		}
 		// Obtém a peça na posição
 		if(piece(position) == null) {
@@ -112,7 +111,7 @@ public class Board {
 		// Verifica se a posição existe no tabuleiro
 		if(!positionExists(position)) {
 			// Lança uma exceção se a posição não existir
-			throw new BoardException("position not on the board.");
+			throw new BoardException("Posição fora do tabuleiro.");
 		}
 		// Retorna true se houver uma peça, false caso contrário
 		return piece(position) != null;

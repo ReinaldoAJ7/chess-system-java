@@ -31,7 +31,7 @@ public class Main {
 		List<ChessPiece> captured = new ArrayList<>();
 		
 		// Loop infinito para manter o jogo em execução
-		while(true) {
+		while(!chessMatch.getCheckMate()) {
 			// Comentário: bloco try foi comentado para desativar o tratamento de exceções
 			try {
 				// Limpa a tela do console
@@ -40,8 +40,8 @@ public class Main {
 				UI.PrintMatch(chessMatch, captured);
 				// Imprime uma linha em branco
 				System.out.println();
-				// Exibe mensagem pedindo a posição de origem
-				System.out.print("Source: ");
+							// Exibe mensagem pedindo a posição de origem
+							System.out.print("Origem: ");
 				// Lê a posição de origem inserida pelo usuário
 				ChessPosition source = UI.readChessPosition(sc);
 				
@@ -54,8 +54,8 @@ public class Main {
 				
 				// Imprime uma linha em branco
 				System.out.println();
-				// Exibe mensagem pedindo a posição de destino
-				System.out.println("Target: ");
+							// Exibe mensagem pedindo a posição de destino
+							System.out.print("Destino: ");
 				// Lê a posição de destino inserida pelo usuário
 				ChessPosition target = UI.readChessPosition(sc);
 				
@@ -79,5 +79,8 @@ public class Main {
 				sc.nextLine();
 			}
 		}
+		
+		UI.clearScreen();
+		UI.PrintMatch(chessMatch, captured);
 	}
 }

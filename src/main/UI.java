@@ -83,8 +83,8 @@ public class UI {
 			// Retorna uma nova posição de xadrez com coluna e linha
 			return new ChessPosition(column, row);
 		} catch (RuntimeException e) {
-			// Se houver erro na leitura, lança uma exceção
-			throw new InputMismatchException("Erro reading ChessPosition.\n" + "Valid values are from a1 to h8.");
+			// Se houver erro na leitura, lança uma exceção com mensagem em Português
+			throw new InputMismatchException("Erro ao ler a posição de xadrez. Valores válidos: a1 até h8.");
 		}
 	}
 
@@ -99,14 +99,16 @@ public class UI {
 		// Imprime uma linha em branco
 		System.out.println();
 		// Exibe o número da jogada atual
-		System.out.println("Turn: " + chessMatch.getTurn());
-		// Exibe qual jogador está esperando para jogar
-		System.out.println("Waiting player: " + chessMatch.getCurrentPlayer());
+		System.out.println("Turno: " + chessMatch.getTurn());
 		
-		// Se há xeque no jogo
-		if(chessMatch.getCheck()) {
-			// Exibe mensagem de alerta de xeque
-			System.out.println("CHECK! >>>");
+		if(!chessMatch.getCheckMate()) {
+			System.out.println("Jogador da vez: " + chessMatch.getCurrentPlayer());
+			if(chessMatch.getCheck()) {
+				System.out.println("XEQUE!");
+			}
+		} else {
+			System.out.println("XEQUE-MATE!");
+			System.out.println("Vencedor: " + chessMatch.getCurrentPlayer());
 		}
 	}
 	
@@ -189,10 +191,10 @@ public class UI {
 		List<ChessPiece> white = captured.stream().filter(x -> x.getColor() == Color.WHITE).collect(Collectors.toList());
 		// Filtra e coleta as peças pretas capturadas
 		List<ChessPiece> black = captured.stream().filter(x -> x.getColor() == Color.BLACK).collect(Collectors.toList());
-		// Exibe título da seção
-		System.out.println("Captured pieces: ");
+		// Exibe título da seção em Português
+		System.out.println("Peças capturadas:");
 		// Exibe rótulo para peças brancas
-		System.out.print("White: ");
+		System.out.print("Brancas: ");
 		// Inicia exibição em branco
 		System.out.print(ANSI_WHITE);
 		// Converte array de peças brancas em string e exibe
@@ -201,7 +203,7 @@ public class UI {
 		System.out.print(ANSI_RESET);
 		
 		// Exibe rótulo para peças pretas
-		System.out.print("Black: ");
+		System.out.print("Pretas: ");
 		// Inicia exibição em vermelho (para preto)
 		System.out.print(ANSI_RED);
 		// Converte array de peças pretas em string e exibe
