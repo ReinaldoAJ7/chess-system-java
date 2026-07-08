@@ -81,7 +81,6 @@ public class Bishop extends ChessPiece{
 		}
 		
 		// Testa movimentos para diagonal nordeste
-		// Define a nova posição uma linha abaixo
 		p.setValues(position.getRow() -1, position.getColumn() - 1);
 		// Loop enquanto a posição existe e não há peça nela
 		while(getBoard().positionExists(p) && !getBoard().thereIsAPiece(p)){
