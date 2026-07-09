@@ -67,8 +67,15 @@ public class Main {
 					// Adiciona a peça capturada à lista de peças capturadas
 					captured.add(capturedPiece);
 				}
-			// Bloco catch desativado para exceções de xadrez
+				
+				if(chessMatch.getPromoted() != null) {
+					System.out.println("Enter piece for promotion (B/N/R/Q): ");
+					String type = sc.nextLine();
+					chessMatch.replacePromotedPiece(type);
+				}
+			
 			}
+			// Bloco catch desativado para exceções de xadrez
 			catch(ChessException e) {
 				System.out.println(e.getMessage());
 				sc.nextLine();

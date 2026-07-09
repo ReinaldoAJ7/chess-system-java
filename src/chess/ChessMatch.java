@@ -1,6 +1,7 @@
 // Declara que este arquivo faz parte do pacote chess
 package chess;
 
+import java.security.InvalidParameterException;
 // Importa a classe ArrayList para criar listas dinâmicas que podem crescer
 import java.util.ArrayList;
 // Importa a interface List para trabalhar com listas genéricas
@@ -35,6 +36,7 @@ public class ChessMatch {
 	private boolean check;
 	private boolean checkMate;
 	private ChessPiece enPassantVunerable;
+	private ChessPiece promoted;
 	
 
 	// Lista privada que armazena todas as peças que ainda estão no tabuleiro
@@ -78,6 +80,11 @@ public class ChessMatch {
 	
 	public ChessPiece getEnPassantVunerable() {
 		return enPassantVunerable;
+	}
+	
+	//
+	public ChessPiece getPromoted() {
+		return promoted;
 	}
 	
 	// Método público que retorna uma matriz com todas as peças do tabuleiro
@@ -130,6 +137,17 @@ public class ChessMatch {
 		
 		ChessPiece movedPiece = (ChessPiece)board.piece(target);
 		
+		//Movimento especial - Promoted(promoção)
+		promoted = null;
+		if(movedPiece instanceof Pawn) {
+			if((movedPiece.getColor() == Color.WHITE && target.getRow() == 0) || (movedPiece.getColor() == Color.BLACK && target.getRow() == 7)) {
+				promoted = (ChessPiece)board.piece(target);
+				promoted = replacePromotedPiece("Q");				
+			}
+		}
+		
+		
+		
 		// Verifica se o oponente está em xeque após o movimento
 		check = (testCheck(opponent(currentPlayer))) ? true : false;
 		
@@ -151,6 +169,33 @@ public class ChessMatch {
 		
 		// Retorna a peça capturada (ou null se nenhuma peça foi capturada)
 		return (ChessPiece)capturedPiece;
+	}
+	
+	public ChessPiece replacePromotedPiece(String type) {
+		if(promoted == null) {
+			throw new IllegalStateException("There's no piece to be promoted! ");
+		}
+		if(!type.equals("B") && !type.equals("N") && !type.equals("R") && !type.equals("Q")){
+			throw new InvalidParameterException("Invalid type for promotion! ");
+		}
+		
+		Position pos = promoted.getChessPosition().toPosition();
+		Piece p = board.removePiece(pos);
+		piecesOnTheBoard.remove(p);
+		
+		ChessPiece newPiece = newPiece(type, promoted.getColor());
+		board.placePiece(newPiece, pos);
+		piecesOnTheBoard.add(newPiece);
+		
+		return newPiece;
+	}
+	
+	private ChessPiece newPiece(String type, Color color) {
+		if(type.equals("B")) return new Bishop(board, color);
+		if(type.equals("N")) return new Knight(board, color);
+		if(type.equals("R")) return new Rook(board, color);
+		return new Queen(board, color);
+		
 	}
 	
 	// Método privado que executa o movimento físico de uma peça no tabuleiro
@@ -396,31 +441,6 @@ public class ChessMatch {
 	
 	// Método privado que configura as peças nas posições iniciais de uma partida de xadrez
 	private void initialSetup() {
-		/*/ Coloca a primeira torre branca em c1
-		placeNewPiece('c', 1, new Rook(board, Color.WHITE));
-		// Coloca a segunda torre branca em c2
-        placeNewPiece('c', 2, new Rook(board, Color.WHITE));
-		// Coloca a terceira torre branca em d2
-        placeNewPiece('d', 2, new Rook(board, Color.WHITE));
-		// Coloca a quarta torre branca em e2
-        placeNewPiece('e', 2, new Rook(board, Color.WHITE));
-		// Coloca a quinta torre branca em e1
-        placeNewPiece('e', 1, new Rook(board, Color.WHITE));
-		// Coloca o rei branco em d1
-        placeNewPiece('d', 1, new King(board, Color.WHITE));
-
-		// Coloca a primeira torre preta em c7
-        placeNewPiece('c', 7, new Rook(board, Color.BLACK));
-		// Coloca a segunda torre preta em c8
-        placeNewPiece('c', 8, new Rook(board, Color.BLACK));
-		// Coloca a terceira torre preta em d7
-        placeNewPiece('d', 7, new Rook(board, Color.BLACK));
-		// Coloca a quarta torre preta em e7
-        placeNewPiece('e', 7, new Rook(board, Color.BLACK));
-		// Coloca a quinta torre preta em e8
-        placeNewPiece('e', 8, new Rook(board, Color.BLACK));
-		// Coloca o rei preto em d8
-        placeNewPiece('d', 8, new King(board, Color.BLACK));*/
 		
 		placeNewPiece('a', 1, new Rook(board, Color.WHITE));
 		placeNewPiece('e', 1, new King(board, Color.WHITE, this));
@@ -448,7 +468,7 @@ public class ChessMatch {
 		placeNewPiece('f', 8, new Bishop(board, Color.BLACK));
 		placeNewPiece('b', 8, new Knight(board, Color.BLACK));
 		placeNewPiece('g', 8, new Knight(board, Color.BLACK));
-		placeNewPiece('a', 7, new Rook(board, Color.BLACK));
+		placeNewPiece('a', 7, new Pawn(board, Color.BLACK, this));
 		placeNewPiece('b', 7, new Pawn(board, Color.BLACK, this));
 		placeNewPiece('c', 7, new Pawn(board, Color.BLACK, this));
 		placeNewPiece('d', 7, new Pawn(board, Color.BLACK, this));
