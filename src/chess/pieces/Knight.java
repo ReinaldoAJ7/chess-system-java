@@ -23,7 +23,7 @@ public class Knight extends ChessPiece{
 	@Override
 	public String toString() {
 		// Retorna a letra K para representar o rei
-		return "K";
+		return "N";
 	}
 
 	// Método privado que verifica se o rei pode se mover para uma posição específica

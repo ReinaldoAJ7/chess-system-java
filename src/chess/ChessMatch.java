@@ -156,6 +156,26 @@ public class ChessMatch {
 			 capturedPieces.add(capturedPiece);
 		 }
 		 
+		 //Movimentos especiais King side rook
+		 if(p instanceof King && target.getColumn() == source.getColumn() + 2) {
+			 // King-side castling: rook is 3 columns to the right and moves to king column +1
+			 Position sourceT = new Position(source.getRow(), source.getColumn() + 3);
+			 Position targetT = new Position(source.getRow(), source.getColumn() + 1);
+			 ChessPiece rook = (ChessPiece)board.removePiece(sourceT);
+			 board.placePiece(rook, targetT);
+			 rook.increaseMoveCount();
+		 }
+		 
+		//Movimentos especiais Queen side rook
+		 if(p instanceof King && target.getColumn() == source.getColumn() - 2) {
+			 // Queen-side castling: rook is 4 columns to the left and moves to king column -1
+			 Position sourceT = new Position(source.getRow(), source.getColumn() - 4);
+			 Position targetT = new Position(source.getRow(), source.getColumn() - 1);
+			 ChessPiece rook = (ChessPiece)board.removePiece(sourceT);
+			 board.placePiece(rook, targetT);
+			 rook.increaseMoveCount();
+		 }
+		 
 		 // Retorna a peça capturada (pode ser null)
 		 return capturedPiece;
 	}
@@ -180,6 +200,25 @@ public class ChessMatch {
 			// Coloca a peça capturada de volta na lista de peças em jogo
 			piecesOnTheBoard.add(capturedPiece);
 		}
+		
+		//Movimentos especiais King side rook
+		 if(p instanceof King && target.getColumn() == source.getColumn() + 2) {
+			 Position sourceT = new Position(source.getRow(), source.getColumn() + 3);
+			 Position targetT = new Position(source.getRow(), source.getColumn() + 1);
+			 ChessPiece rook = (ChessPiece)board.removePiece(targetT);
+			 board.placePiece(rook, sourceT);
+			 // Ao desfazer um roque, devemos decrementar o contador de movimentos do rook
+			 rook.decreaseMoveCount();
+		 }
+		 
+		//Movimentos especiais Queen side rook
+		 if(p instanceof King && target.getColumn() == source.getColumn() - 2) {
+			 Position sourceT = new Position(source.getRow(), source.getColumn() - 4);
+			 Position targetT = new Position(source.getRow(), source.getColumn() - 1);
+			 ChessPiece rook = (ChessPiece)board.removePiece(targetT);
+			 board.placePiece(rook, sourceT);
+			 rook.decreaseMoveCount();
+		 }
 	}
 	
 	// Método privado que valida se a posição de origem é válida para um movimento
@@ -335,7 +374,7 @@ public class ChessMatch {
         placeNewPiece('d', 8, new King(board, Color.BLACK));*/
 		
 		placeNewPiece('a', 1, new Rook(board, Color.WHITE));
-		placeNewPiece('e', 1, new King(board, Color.WHITE));
+		placeNewPiece('e', 1, new King(board, Color.WHITE, this));
 		placeNewPiece('d', 1, new Queen(board, Color.WHITE));
 		placeNewPiece('h', 1, new Rook(board, Color.WHITE));
 		placeNewPiece('c', 1, new Bishop(board, Color.WHITE));
@@ -353,7 +392,7 @@ public class ChessMatch {
 		
 		
 		placeNewPiece('a', 8, new Rook(board, Color.BLACK));
-		placeNewPiece('e', 8, new King(board, Color.BLACK));
+		placeNewPiece('e', 8, new King(board, Color.BLACK, this));
 		placeNewPiece('d', 8, new Queen(board, Color.BLACK));
 		placeNewPiece('h', 8, new Rook(board, Color.BLACK));
 		placeNewPiece('c', 8, new Bishop(board, Color.BLACK));

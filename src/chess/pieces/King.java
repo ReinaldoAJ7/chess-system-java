@@ -5,6 +5,7 @@ package chess.pieces;
 import boardgame.Board;
 // Importa a classe Position do pacote boardgame
 import boardgame.Position;
+import chess.ChessMatch;
 // Importa a classe ChessPiece do pacote chess
 import chess.ChessPiece;
 // Importa a enumeração Color do pacote chess
@@ -13,10 +14,13 @@ import chess.Color;
 // Classe que representa a peça Rei no xadrez, herda de ChessPiece
 public class King extends ChessPiece{
 
+	private ChessMatch chessMatch;
+	
 	// Construtor que inicializa um rei com o tabuleiro e cor
-	public King(Board board, Color color) {
+	public King(Board board, Color color, ChessMatch chessMatch) {
 		// Chama o construtor da classe pai (ChessPiece) passando tabuleiro e cor
 		super(board, color);
+		this.chessMatch = chessMatch;
 	}
 	
 	// Método que retorna a representação em texto do rei
@@ -33,6 +37,12 @@ public class King extends ChessPiece{
 		// Retorna true se não há peça ou se a peça é do oponente
 		return p == null || p.getColor() != getColor();
 	}
+	
+ 	 private boolean testRookCastling(Position position) {
+ 		 ChessPiece p = (ChessPiece)getBoard().piece(position);
+ 		 // deve existir uma peça, ela deve ser uma Rook da mesma cor e não pode ter se movido
+ 		 return p != null && p instanceof Rook && p.getColor() == getColor() && p.getMoveCount() == 0;
+ 	 }
 	
 	// Método que retorna uma matriz booleana com todos os movimentos possíveis do rei
 	@Override
@@ -115,6 +125,30 @@ public class King extends ChessPiece{
 			mat[p.getRow()][p.getColumn()] = true;
 		}
 		
+		//Jogadas especiais "Roque (Castling)"
+		if(getMoveCount() == 0 && !chessMatch.getCheck()) {
+			//Jogadas especiais "Roque (Castling)" - King side Rook
+			Position posT1 = new Position (position.getRow(), position.getColumn() + 3);
+			if(testRookCastling(posT1)) {
+				Position p1 = new Position(position.getRow(), position.getColumn() + 1);
+				Position p2 = new Position(position.getRow(), position.getColumn() + 2);
+				if(getBoard().piece(p1) == null && getBoard().piece(p2) == null) {
+					mat[position.getRow()][position.getColumn() + 2] = true;
+				}
+			}
+			
+					 //Jogadas especiais "Roque (Castling)" - Queen side Rook
+					 // rook fica 4 colunas à esquerda do rei
+					 Position posT2 = new Position (position.getRow(), position.getColumn() - 4);
+			if(testRookCastling(posT2)) {
+				Position p1 = new Position(position.getRow(), position.getColumn() - 1);
+				Position p2 = new Position(position.getRow(), position.getColumn() - 2);
+				Position p3 = new Position(position.getRow(), position.getColumn() - 3);
+				if(getBoard().piece(p1) == null && getBoard().piece(p2) == null && getBoard().piece(p3) == null) {
+					mat[position.getRow()][position.getColumn() - 2] = true;
+				}
+			}
+		}
 		// Retorna a matriz com todos os movimentos possíveis
 		return mat;
 	}

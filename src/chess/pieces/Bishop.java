@@ -80,14 +80,14 @@ public class Bishop extends ChessPiece{
 			mat[p.getRow()][p.getColumn()] = true;
 		}
 		
-		// Testa movimentos para diagonal nordeste
-		p.setValues(position.getRow() -1, position.getColumn() - 1);
+ 		// Testa movimentos para diagonal noroeste (up-left)
+ 		p.setValues(position.getRow() -1, position.getColumn() - 1);
 		// Loop enquanto a posição existe e não há peça nela
 		while(getBoard().positionExists(p) && !getBoard().thereIsAPiece(p)){
 			// Marca esta posição como movimento possível
 			mat[p.getRow()][p.getColumn()] = true;
-			// Move uma linha abaixo
-			p.setValues(p.getRow() - 1, p.getColumn() + 1);
+			// Move uma linha acima e uma coluna à esquerda
+			p.setValues(p.getRow() - 1, p.getColumn() - 1);
 		}
 		// Se há uma peça do oponente nesta posição
 		if(getBoard().positionExists(p) && isThereOpponentPiece(p)){
