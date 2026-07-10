@@ -1,7 +1,6 @@
 // Declara que este arquivo faz parte do pacote chess
 package chess;
 
-import java.security.InvalidParameterException;
 // Importa a classe ArrayList para criar listas dinâmicas que podem crescer
 import java.util.ArrayList;
 // Importa a interface List para trabalhar com listas genéricas
@@ -176,7 +175,7 @@ public class ChessMatch {
 			throw new IllegalStateException("There's no piece to be promoted! ");
 		}
 		if(!type.equals("B") && !type.equals("N") && !type.equals("R") && !type.equals("Q")){
-			throw new InvalidParameterException("Invalid type for promotion! ");
+			return promoted;
 		}
 		
 		Position pos = promoted.getChessPosition().toPosition();
